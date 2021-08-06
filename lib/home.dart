@@ -10,6 +10,34 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Completer<GoogleMapController> _controller = Completer();
+  _onMapCreated (GoogleMapController googleMapController){
+    _controller.complete(googleMapController);
+  }
+ _movimentoCamera () async{
+  GoogleMapController googleMapController = await _controller.future;
+  googleMapController.animateCamera(
+    CameraUpdate.newCameraPosition(
+      CameraPosition(
+          target: LatLng(-23.562436, -46.655005),
+          zoom: 16,
+          tilt: 45,
+          bearing: -30,
+      )
+    )
+  );
+ }
+  /*int valorSelecioando = 0;
+  List <Widget> _opcoesWidget = [
+    Text("Widget 2"),
+    Text("Widget 2"),
+    Text("Widget 3"),
+  ];
+
+  void setandoTela (int valor) {
+    setState(() {
+      this.valorSelecioando = valor;
+    });
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -19,32 +47,22 @@ class _HomeState extends State<Home> {
       ),
       body: Container(
         child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(-22.945854, -44.389454),
-            zoom: 15
-          ),
           mapType: MapType.normal,
-          myLocationButtonEnabled: true,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(-23.502436, -46.655005)
+          ),
+          onMapCreated: _onMapCreated,
 
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-          ),
-
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: _movimentoCamera,
+        child: Icon(
+          Icons.done
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+
 
     );
   }
