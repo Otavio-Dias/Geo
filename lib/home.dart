@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'widgets/my_panter.dart';
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -10,6 +11,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Completer<GoogleMapController> _controller = Completer();
+  Set<Marker> _marcadores = {
+
+  };
   _onMapCreated (GoogleMapController googleMapController){
     _controller.complete(googleMapController);
   }
@@ -39,6 +43,23 @@ class _HomeState extends State<Home> {
     });
   } */
 
+  _carregarMarcadores (){
+    Marker marcador  = Marker(
+        markerId: MarkerId(
+          "casa"
+        ),
+      position: LatLng (-23.502436, -46.655005),
+    );
+    setState(() {
+      this._marcadores.add(marcador);
+    });
+
+  }
+  @override
+  void initState() {
+    _carregarMarcadores();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +73,7 @@ class _HomeState extends State<Home> {
             target: LatLng(-23.502436, -46.655005)
           ),
           onMapCreated: _onMapCreated,
+          markers: _marcadores,
 
         ),
       ),
